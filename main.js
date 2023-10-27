@@ -13,6 +13,15 @@ function update(size, preview, text) {
     size.textContent = `w: ${w}; h: ${h}; ctl: ${ctl}`;
 }
 
+function downloadURI(uri, name) {
+    let link = document.createElement("a");
+    link.download = name;
+    link.href = uri;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
 let input1 = document.getElementById("input-1");
 let input2 = document.getElementById("input-2");
 let input3 = document.getElementById("input-3");
@@ -21,7 +30,8 @@ let size2 = document.getElementById("size-2");
 let size3 = document.getElementById("size-3");
 
 let previewObj = document.getElementById("preview");
-previewObj.addEventListener('load', (event) => {
+let saveButton = document.getElementById("save-button");
+previewObj.addEventListener('load', (_event) => {
     let svgDocument = previewObj.contentDocument;
     let preview1 = svgDocument.getElementById("tspan389");
     let preview2 = svgDocument.getElementById("tspan223");
@@ -29,4 +39,11 @@ previewObj.addEventListener('load', (event) => {
     bind(input1, size1, preview1);
     bind(input2, size2, preview2);
     bind(input3, size3, preview3);
+
+    saveButton.addEventListener("click", (_event) => {
+        let serializer = new XMLSerializer();
+        let svgData = serializer.serializeToString(svgDocument);
+        let uri = 'data:image/svg+xml;charset=utf8,' + encodeURIComponent(svgData);
+        downloadURI(uri, "demo.svg");
+    })
 })
