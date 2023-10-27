@@ -3,10 +3,14 @@ function bind(input, size, preview) {
     input.addEventListener('input', (event) => update(size, preview, event.target.value));
 }
 
+const numDisplayDigit = 2;
 function update(size, preview, text) {
     preview.textContent = text;
     bBox = preview.getBBox();
-    size.textContent = `w: ${bBox.width}; h: ${bBox.height}; ctl: ${preview.getComputedTextLength()}`
+    w = bBox.width.toFixed(numDisplayDigit);
+    h = bBox.height.toFixed(numDisplayDigit);
+    ctl = preview.getComputedTextLength().toFixed(numDisplayDigit);
+    size.textContent = `w: ${w}; h: ${h}; ctl: ${ctl}`;
 }
 
 let input1 = document.getElementById("input-1");
